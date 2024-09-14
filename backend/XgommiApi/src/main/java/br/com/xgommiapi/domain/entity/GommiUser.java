@@ -31,10 +31,10 @@ public class GommiUser {
     private String name;
 
     @OneToMany(mappedBy = "follower")
-    private List<GommiUser> following;
+    private List<FollowerRelation> following;
 
     @OneToMany(mappedBy = "followed")
-    private List<GommiUser> followers;
+    private List<FollowerRelation> followers;
 
     @ManyToOne
     private Community comunity;
