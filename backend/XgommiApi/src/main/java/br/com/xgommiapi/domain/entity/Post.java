@@ -1,7 +1,9 @@
 package br.com.xgommiapi.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +23,7 @@ public class Post {
     @Column(nullable = false)
     private String text;
 
+    @JsonIgnore
     @ManyToOne
     private GommiUser author;
 
@@ -32,6 +36,11 @@ public class Post {
     private int upvotes;
     private int downvotes;
     private boolean isRepost;
+
+    public Post(GommiUser author, String text) {
+        this.author = author;
+        this.text = text;
+    }
 
     @Override
     public boolean equals(Object o) {
