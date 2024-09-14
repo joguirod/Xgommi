@@ -1,7 +1,9 @@
 package br.com.xgommiapi.controller;
 
 import br.com.xgommiapi.domain.entity.GommiUser;
-import br.com.xgommiapi.dto.GommiUserDTO;
+import br.com.xgommiapi.dto.GommiUserRequestDTO;
+import br.com.xgommiapi.dto.GommiUserResponseDTO;
+import br.com.xgommiapi.dto.GommiUserSimpleResponseDTO;
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
 import br.com.xgommiapi.exception.GommiUserNotUniqueException;
 import br.com.xgommiapi.exception.GommiUserNullAtributeException;
@@ -15,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/xgommi/gommiuser")
-public class GommiUserController {
+public class  GommiUserController {
     @Autowired
     private GommiUserService gommiUserService;
 
@@ -24,28 +26,28 @@ public class GommiUserController {
     }
 
     @PostMapping
-    public ResponseEntity<GommiUser> post(@RequestBody GommiUserDTO gommiUserDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
-        return new ResponseEntity<>(gommiUserService.createGommiUser(gommiUserDTO), HttpStatus.CREATED);
+    public ResponseEntity<GommiUserSimpleResponseDTO> post(@RequestBody GommiUserRequestDTO gommiUserRequestDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
+        return new ResponseEntity<>(gommiUserService.createGommiUser(gommiUserRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<GommiUser>> getAll() {
-        return new ResponseEntity<>(gommiUserService.getAllGommiUsers(), HttpStatus.OK);
+    public ResponseEntity<List<GommiUserSimpleResponseDTO>> getAll() {
+        return new ResponseEntity<>(gommiUserService.getAllGommiUsersSimpleResponseDTO(), HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<GommiUser> get(@PathVariable Long id) throws GommiUserNotFoundException {
-        return new ResponseEntity<>(gommiUserService.getGommiUserById(id), HttpStatus.OK);
+    public ResponseEntity<GommiUserResponseDTO> get(@PathVariable Long id) throws GommiUserNotFoundException {
+        return new ResponseEntity<>(gommiUserService.getGommiUserResponseDTOById(id), HttpStatus.OK);
     }
 
     @GetMapping("/login/{login}")
-    public ResponseEntity<GommiUser> getByLogin(@PathVariable String login) throws GommiUserNotFoundException {
-        return new ResponseEntity<>(gommiUserService.getGommiUserByLogin(login), HttpStatus.OK);
+    public ResponseEntity<GommiUserResponseDTO> getByLogin(@PathVariable String login) throws GommiUserNotFoundException {
+        return new ResponseEntity<>(gommiUserService.getGommiUserResponseDTOByLogin(login), HttpStatus.OK);
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<GommiUser> getByEmail(@PathVariable String email) throws GommiUserNotFoundException {
-        return new ResponseEntity<>(gommiUserService.getGommiUserByEmail(email), HttpStatus.OK);
+    public ResponseEntity<GommiUserResponseDTO> getByEmail(@PathVariable String email) throws GommiUserNotFoundException {
+        return new ResponseEntity<>(gommiUserService.getGommiUserResponseDTOByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping

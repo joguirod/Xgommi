@@ -2,7 +2,7 @@ package br.com.xgommiapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record GommiUserDTO(
+public record GommiUserRequestDTO(
     @NotBlank(message = "Login is required")
     String login,
 

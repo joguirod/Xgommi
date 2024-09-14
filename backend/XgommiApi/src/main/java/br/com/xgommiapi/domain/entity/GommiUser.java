@@ -1,6 +1,6 @@
 package br.com.xgommiapi.domain.entity;
 
-import br.com.xgommiapi.dto.GommiUserDTO;
+import br.com.xgommiapi.dto.GommiUserRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,12 +49,12 @@ public class GommiUser {
     private String biography;
     private LocalDateTime registrationDate;
 
-    public GommiUser(GommiUserDTO gommiUserDTO) {
-        this.login = gommiUserDTO.login();
-        this.password = gommiUserDTO.password();
-        this.email = gommiUserDTO.email();
-        this.name = gommiUserDTO.name();
-        this.biography = gommiUserDTO.biography();
+    public GommiUser(GommiUserRequestDTO gommiUserRequestDTO) {
+        this.login = gommiUserRequestDTO.login();
+        this.password = gommiUserRequestDTO.password();
+        this.email = gommiUserRequestDTO.email();
+        this.name = gommiUserRequestDTO.name();
+        this.biography = gommiUserRequestDTO.biography();
     }
 
     @Override

@@ -2,21 +2,24 @@ package br.com.xgommiapi.service;
 
 import br.com.xgommiapi.domain.entity.GommiUser;
 import br.com.xgommiapi.domain.repository.GommiUserRepository;
-import br.com.xgommiapi.dto.GommiUserDTO;
+import br.com.xgommiapi.dto.GommiUserRequestDTO;
+import br.com.xgommiapi.dto.GommiUserResponseDTO;
+import br.com.xgommiapi.dto.GommiUserSimpleResponseDTO;
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
 import br.com.xgommiapi.exception.GommiUserNotUniqueException;
 import br.com.xgommiapi.exception.GommiUserNullAtributeException;
+import br.com.xgommiapi.utils.GommiUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GommiUserService {
-    @Autowired
-    private GommiUserRepository gommiUserRepository;
+    private final GommiUserRepository gommiUserRepository;
 
     public GommiUserService(GommiUserRepository gommiUserRepository) {
         this.gommiUserRepository = gommiUserRepository;
@@ -56,12 +59,37 @@ public class GommiUserService {
         return gommiUserRepository.findAll();
     }
 
-    public GommiUser createGommiUser(GommiUserDTO gommiUserDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
-        GommiUser gommiUser = new GommiUser(gommiUserDTO);
+    public GommiUserResponseDTO getGommiUserResponseDTOById(Long id) throws GommiUserNotFoundException {
+        GommiUser gommiUser = getGommiUserById(id);
+        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+    }
+
+    public GommiUserResponseDTO getGommiUserResponseDTOByLogin(String login) throws GommiUserNotFoundException {
+        GommiUser gommiUser = getGommiUserByLogin(login);
+        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+    }
+
+    public GommiUserResponseDTO getGommiUserResponseDTOByEmail(String email) throws GommiUserNotFoundException {
+        GommiUser gommiUser = getGommiUserByEmail(email);
+        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+    }
+
+    public List<GommiUserSimpleResponseDTO> getAllGommiUsersSimpleResponseDTO() {
+        List<GommiUser> usersFound = getAllGommiUsers();
+        return GommiUserUtils.parseGommiUserListToSimplesResponseDTOList(usersFound);
+    }
+
+    public GommiUserSimpleResponseDTO createGommiUser(GommiUserRequestDTO gommiUserRequestDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
+        GommiUser gommiUser = new GommiUser(gommiUserRequestDTO);
+        validateUser(gommiUser);
+        gommiUser.setRegistrationDate(LocalDateTime.now());
+        gommiUserRepository.save(gommiUser);
+        return GommiUserUtils.parseGommiUserToSimpleResponseDTO(gommiUser);
+    }
+
+    public void validateUser(GommiUser gommiUser) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
         validateGommiUserUniqueAtributes(gommiUser);
         validateGommiUserNotNullAtributes(gommiUser);
-        gommiUser.setRegistrationDate(LocalDateTime.now());
-        return gommiUserRepository.save(gommiUser);
     }
 
     public GommiUser updateUser(GommiUser gommiUserUpdated) throws GommiUserNotUniqueException, GommiUserNullAtributeException, GommiUserNotFoundException {
@@ -85,7 +113,7 @@ public class GommiUserService {
             throw new GommiUserNotUniqueException("An user with the login " + gommiUser.getLogin() + " already exists");
         }
 
-        if(gommiUserRepository.existsByEmail(gommiUser.getLogin())) {
+        if(gommiUserRepository.existsByEmail(gommiUser.getEmail())) {
             throw new GommiUserNotUniqueException("An user with the email " + gommiUser.getEmail() + " already exists");
         }
     }
@@ -98,9 +126,5 @@ public class GommiUserService {
         if(gommiUser.getName() == null || gommiUser.getName().trim().isEmpty()) {
             throw new GommiUserNullAtributeException("Name is required");
         }
-    }
-
-    public GommiUser save(GommiUser gommiUser) {
-        return gommiUserRepository.save(gommiUser);
     }
 }
