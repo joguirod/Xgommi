@@ -19,8 +19,8 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(GommiUserNotUniqueException.class)
     private ResponseEntity<RestExceptionMessage> GommiUserNotUniqueException(GommiUserNotUniqueException ex) {
-        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.CONFLICT, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
     }
 
     @ExceptionHandler(GommiUserNullAtributeException.class)
