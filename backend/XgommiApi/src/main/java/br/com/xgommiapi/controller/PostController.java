@@ -28,6 +28,11 @@ public class PostController {
         return new ResponseEntity<>(postService.getAllPostResponseDTO(), HttpStatus.OK);
     }
 
+    @GetMapping("/id/{postId}")
+    public ResponseEntity<PostResponseDTO> getById(@PathVariable Long postId) throws PostNotFoundException {
+        return new ResponseEntity<>(postService.getPostResponseDTOById(postId), HttpStatus.OK);
+    }
+
     @GetMapping("/author/id/{authorId}")
     public ResponseEntity<List<PostResponseDTO>> getAllByAuthorId(@PathVariable Long authorId) throws GommiUserNotFoundException {
         return new ResponseEntity<>(postService.getPostsResponseDTOByAuthorId(authorId), HttpStatus.OK);
