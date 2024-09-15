@@ -1,4 +1,4 @@
-package br.com.xgommiapi.infra;
+package br.com.xgommiapi.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

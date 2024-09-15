@@ -1,4 +1,4 @@
-package br.com.xgommiapi.infra;
+package br.com.xgommiapi.handler;
 
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
 import br.com.xgommiapi.exception.GommiUserNotUniqueException;
