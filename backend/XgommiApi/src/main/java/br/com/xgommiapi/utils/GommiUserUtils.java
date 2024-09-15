@@ -1,7 +1,9 @@
 package br.com.xgommiapi.utils;
 
+import br.com.xgommiapi.domain.entity.FollowerRelation;
 import br.com.xgommiapi.domain.entity.GommiUser;
 import br.com.xgommiapi.domain.entity.Post;
+import br.com.xgommiapi.dto.FollowerRelationResponseDTO;
 import br.com.xgommiapi.dto.GommiUserResponseDTO;
 import br.com.xgommiapi.dto.GommiUserSimpleResponseDTO;
 
@@ -15,8 +17,6 @@ public class GommiUserUtils {
                 .login(gommiUser.getLogin())
                 .email(gommiUser.getEmail())
                 .name(gommiUser.getName())
-                .biography(gommiUser.getBiography())
-                .registrationDate(gommiUser.getRegistrationDate())
                 .build();
     }
 
@@ -42,5 +42,13 @@ public class GommiUserUtils {
         return gommiUserList.stream()
                 .map(GommiUserUtils::parseGommiUserToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static FollowerRelationResponseDTO parseFollowerRelationToResponseDTO(FollowerRelation followerRelation) {
+        return FollowerRelationResponseDTO.builder()
+                .idFollowRelation(followerRelation.getIdRelation())
+                .follower(parseGommiUserToSimpleResponseDTO(followerRelation.getFollower()))
+                .followed(parseGommiUserToSimpleResponseDTO(followerRelation.getFollowed()))
+                .build();
     }
 }
