@@ -10,9 +10,6 @@ public record GommiUserSimpleResponseDTO(
         Long idGommiUser,
         String login,
         String email,
-        String name,
-        String biography,
-        LocalDateTime registrationDate,
-        Community community
+        String name
 ){
 }

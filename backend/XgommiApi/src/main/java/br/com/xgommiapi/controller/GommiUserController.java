@@ -1,12 +1,8 @@
 package br.com.xgommiapi.controller;
 
 import br.com.xgommiapi.domain.entity.GommiUser;
-import br.com.xgommiapi.dto.GommiUserRequestDTO;
-import br.com.xgommiapi.dto.GommiUserResponseDTO;
-import br.com.xgommiapi.dto.GommiUserSimpleResponseDTO;
-import br.com.xgommiapi.exception.GommiUserNotFoundException;
-import br.com.xgommiapi.exception.GommiUserNotUniqueException;
-import br.com.xgommiapi.exception.GommiUserNullAtributeException;
+import br.com.xgommiapi.dto.*;
+import br.com.xgommiapi.exception.*;
 import br.com.xgommiapi.service.GommiUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +24,11 @@ public class  GommiUserController {
     @PostMapping
     public ResponseEntity<GommiUserSimpleResponseDTO> post(@RequestBody GommiUserRequestDTO gommiUserRequestDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
         return new ResponseEntity<>(gommiUserService.createGommiUser(gommiUserRequestDTO), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<FollowerRelationResponseDTO> followGommiUser(@RequestBody FollowerRelationRequestDTO followerRelationRequestDTO) throws SelfFollowException, GommiUserNotFoundException, GommiUserNullAtributeException, FollowerRelationAlreadyExistsException {
+        return new ResponseEntity<>(gommiUserService.createFollowerRelationResponse(followerRelationRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping

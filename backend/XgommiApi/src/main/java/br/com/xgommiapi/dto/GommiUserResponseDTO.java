@@ -15,6 +15,7 @@ public record GommiUserResponseDTO (
         String biography,
         LocalDateTime registrationDate,
         List<PostSimpleResponseDTO> posts,
-        Community community
-){
+        List<FollowingResponseDTO> following,
+        List<FollowerResponseDTO> followers
+        ){
 }

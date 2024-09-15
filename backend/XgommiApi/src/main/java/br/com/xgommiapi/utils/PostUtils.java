@@ -12,7 +12,7 @@ public class PostUtils {
         return PostResponseDTO.builder()
                 .idPost(post.getIdPost())
                 .text(post.getText())
-                .author(GommiUserUtils.parseGommiUserToSimpleResponseDTO(post.getAuthor()))
+                .author(GommiUserUtils.convertToSimpleResponseDTO(post.getAuthor()))
                 .text(post.getText())
                 .upvotes(post.getUpvotes())
                 .downvotes(0)
