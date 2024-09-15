@@ -59,22 +59,22 @@ public class GommiUserService {
 
     public GommiUserResponseDTO getGommiUserResponseDTOById(Long id) throws GommiUserNotFoundException {
         GommiUser gommiUser = getGommiUserById(id);
-        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+        return GommiUserUtils.convertToResponseDTO(gommiUser);
     }
 
     public GommiUserResponseDTO getGommiUserResponseDTOByLogin(String login) throws GommiUserNotFoundException {
         GommiUser gommiUser = getGommiUserByLogin(login);
-        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+        return GommiUserUtils.convertToResponseDTO(gommiUser);
     }
 
     public GommiUserResponseDTO getGommiUserResponseDTOByEmail(String email) throws GommiUserNotFoundException {
         GommiUser gommiUser = getGommiUserByEmail(email);
-        return GommiUserUtils.parseGommiUserToResponseDTO(gommiUser);
+        return GommiUserUtils.convertToResponseDTO(gommiUser);
     }
 
     public List<GommiUserSimpleResponseDTO> getAllGommiUsersSimpleResponseDTO() {
         List<GommiUser> usersFound = getAllGommiUsers();
-        return GommiUserUtils.parseGommiUserListToSimplesResponseDTOList(usersFound);
+        return GommiUserUtils.convertToSimpleResponseDTOList(usersFound);
     }
 
     public GommiUserSimpleResponseDTO createGommiUser(GommiUserRequestDTO gommiUserRequestDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
@@ -82,7 +82,7 @@ public class GommiUserService {
         validateUser(gommiUser);
         gommiUser.setRegistrationDate(LocalDateTime.now());
         gommiUserRepository.save(gommiUser);
-        return GommiUserUtils.parseGommiUserToSimpleResponseDTO(gommiUser);
+        return GommiUserUtils.convertToSimpleResponseDTO(gommiUser);
     }
 
     public void validateUser(GommiUser gommiUser) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
@@ -115,7 +115,7 @@ public class GommiUserService {
 
     public FollowerRelationResponseDTO createFollowerRelationResponse(FollowerRelationRequestDTO followRequest) throws SelfFollowException, GommiUserNotFoundException, GommiUserNullAtributeException, FollowerRelationAlreadyExistsException {
         FollowerRelation followerRelation = followGommiUser(followRequest.idFollower(), followRequest.idFollowed());
-        return GommiUserUtils.parseFollowerRelationToResponseDTO(followerRelation);
+        return GommiUserUtils.convertToFollowerRelationResponseDTO(followerRelation);
     }
 
     public void deleteGommiUser(Long id) throws GommiUserNotFoundException {

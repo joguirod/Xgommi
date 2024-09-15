@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GommiUserUtils {
-    public static GommiUserSimpleResponseDTO parseGommiUserToSimpleResponseDTO(GommiUser gommiUser) {
+    public static GommiUserSimpleResponseDTO convertToSimpleResponseDTO(GommiUser gommiUser) {
         return GommiUserSimpleResponseDTO.builder()
                 .idGommiUser(gommiUser.getIdGommiUser())
                 .login(gommiUser.getLogin())
@@ -17,13 +17,13 @@ public class GommiUserUtils {
                 .build();
     }
 
-    public static List<GommiUserSimpleResponseDTO> parseGommiUserListToSimplesResponseDTOList(List<GommiUser> gommiUserList) {
+    public static List<GommiUserSimpleResponseDTO> convertToSimpleResponseDTOList(List<GommiUser> gommiUserList) {
         return gommiUserList.stream()
-                .map(GommiUserUtils::parseGommiUserToSimpleResponseDTO)
+                .map(GommiUserUtils::convertToSimpleResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public static GommiUserResponseDTO parseGommiUserToResponseDTO(GommiUser gommiUser) {
+    public static GommiUserResponseDTO convertToResponseDTO(GommiUser gommiUser) {
         return GommiUserResponseDTO.builder()
                 .idGommiUser(gommiUser.getIdGommiUser())
                 .login(gommiUser.getLogin())
@@ -37,30 +37,30 @@ public class GommiUserUtils {
                 .build();
     }
 
-    public static List<GommiUserResponseDTO> parseGommiUserListToResponseDTOList(List<GommiUser> gommiUserList) {
+    public static List<GommiUserResponseDTO> convertToResponseDTOList(List<GommiUser> gommiUserList) {
         return gommiUserList.stream()
-                .map(GommiUserUtils::parseGommiUserToResponseDTO)
+                .map(GommiUserUtils::convertToResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public static FollowerRelationResponseDTO parseFollowerRelationToResponseDTO(FollowerRelation followerRelation) {
+    public static FollowerRelationResponseDTO convertToFollowerRelationResponseDTO(FollowerRelation followerRelation) {
         return FollowerRelationResponseDTO.builder()
                 .idFollowRelation(followerRelation.getIdRelation())
-                .follower(parseGommiUserToSimpleResponseDTO(followerRelation.getFollower()))
-                .followed(parseGommiUserToSimpleResponseDTO(followerRelation.getFollowed()))
+                .follower(convertToSimpleResponseDTO(followerRelation.getFollower()))
+                .followed(convertToSimpleResponseDTO(followerRelation.getFollowed()))
                 .build();
     }
 
-    public static List<FollowerRelationResponseDTO> parseFollowerRelationListToResponseDTOList(List<FollowerRelation> followerRelationList) {
+    public static List<FollowerRelationResponseDTO> convertFollowerRelationsToResponseDTOs(List<FollowerRelation> followerRelationList) {
         return followerRelationList.stream()
-                .map(GommiUserUtils::parseFollowerRelationToResponseDTO)
+                .map(GommiUserUtils::convertToFollowerRelationResponseDTO)
                 .collect(Collectors.toList());
     }
 
     public static FollowerResponseDTO convertToFollowerResponseDTO(FollowerRelation followerRelation) {
         return FollowerResponseDTO.builder()
                 .idFollowRelation(followerRelation.getIdRelation())
-                .follower(parseGommiUserToSimpleResponseDTO(followerRelation.getFollower()))
+                .follower(convertToSimpleResponseDTO(followerRelation.getFollower()))
                 .build();
     }
 
@@ -73,7 +73,7 @@ public class GommiUserUtils {
     public static FollowingResponseDTO convertToFollowingResponseDTO(FollowerRelation followerRelation) {
         return FollowingResponseDTO.builder()
                 .idFollowRelation(followerRelation.getIdRelation())
-                .followed(parseGommiUserToSimpleResponseDTO(followerRelation.getFollower()))
+                .followed(convertToSimpleResponseDTO(followerRelation.getFollower()))
                 .build();
     }
 
