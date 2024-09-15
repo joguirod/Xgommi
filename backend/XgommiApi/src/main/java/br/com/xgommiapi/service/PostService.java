@@ -25,32 +25,48 @@ public class PostService {
         this.gommiUserService = gommiUserService;
     }
 
-    public List<PostResponseDTO> getAllPosts() {
-        return postRepository.findAll().stream()
-                .map(PostUtils::parsePostToResponseDTO)
-                .collect(Collectors.toList());
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 
-    public PostResponseDTO getPostById(Long id) throws PostNotFoundException {
+    public Post getPostById(Long id) throws PostNotFoundException {
         Optional<Post> post = postRepository.findById(id);
 
         if (post.isEmpty()) throw new PostNotFoundException("Post with id " + id + " not found");
 
-        return  PostUtils.parsePostToResponseDTO(post.get());
+        return post.get();
     }
 
-    public List<PostResponseDTO> getPostsByAuthorId(Long userId) throws GommiUserNotFoundException {
+    public List<Post> getPostsByAuthorId(Long userId) throws GommiUserNotFoundException {
         // try to get user with the specified id, if it doesn't exist, the method will throw not found exception
         GommiUser gommiUser = gommiUserService.getGommiUserById(userId);
-        List<Post> postsFound = postRepository.findByAuthorIdGommiUser(userId);
+        return postRepository.findByAuthorIdGommiUser(userId);
+    }
+
+    public List<Post> getPostByAuthorLogin(String login) throws GommiUserNotFoundException {
+        // try to get user with the specified login, if it doesn't exist, the method will throw not found exception
+        GommiUser gommiUser = gommiUserService.getGommiUserByLogin(login);
+        return postRepository.findByAuthorLogin(login);
+    }
+
+    public List<PostResponseDTO> getAllPostResponseDTO() {
+        return PostUtils.parsePostListToResponseDTOList(postRepository.findAll());
+    }
+
+    public PostResponseDTO getPostResponseDTOById(Long id) throws PostNotFoundException {
+        Post postFound = getPostById(id);
+
+        return PostUtils.parsePostToResponseDTO(postFound);
+    }
+
+    public List<PostResponseDTO> getPostsResponseDTOByAuthorId(Long userId) throws GommiUserNotFoundException {
+        List<Post> postsFound = getPostsByAuthorId(userId);
         return PostUtils.parsePostListToResponseDTOList(postsFound);
     }
 
-    public List<PostResponseDTO> getPostByAuthorLogin(String login) throws GommiUserNotFoundException {
-        // try to get user with the specified login, if it doesn't exist, the method will throw not found exception
-        GommiUser gommiUser = gommiUserService.getGommiUserByLogin(login);
-        List<Post> postsFound = postRepository.findByAuthorLogin(login);
-        return PostUtils.parsePostListToResponseDTOList(postsFound);
+    public List<PostResponseDTO> getPostsResponseDTOByAuthorLogin(String login) throws GommiUserNotFoundException {
+        List<Post> postsFounds = getPostByAuthorLogin(login);
+        return PostUtils.parsePostListToResponseDTOList(postsFounds);
     }
 
     public PostResponseDTO createPost(PostRequestDTO postDTO) throws GommiUserNotFoundException {
@@ -58,5 +74,19 @@ public class PostService {
         Post post = new Post(author, postDTO.text());
         postRepository.save(post);
         return PostUtils.parsePostToResponseDTO(post);
+    }
+
+    public PostSimpleResponseDTO upVotePost(Long id) throws PostNotFoundException {
+        Post post = getPostById(id);
+        post.incrementUpVotes();
+        postRepository.save(post);
+        return PostUtils.parsePostToSimpleResponseDTO(post);
+    }
+
+    public PostSimpleResponseDTO downVotePost(Long id) throws PostNotFoundException {
+        Post post = getPostById(id);
+        post.incrementDownVotes();
+        postRepository.save(post);
+        return PostUtils.parsePostToSimpleResponseDTO(post);
     }
 }

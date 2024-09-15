@@ -2,7 +2,9 @@ package br.com.xgommiapi.controller;
 
 import br.com.xgommiapi.dto.PostRequestDTO;
 import br.com.xgommiapi.dto.PostResponseDTO;
+import br.com.xgommiapi.dto.PostSimpleResponseDTO;
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
+import br.com.xgommiapi.exception.PostNotFoundException;
 import br.com.xgommiapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,21 +25,36 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getAll() {
-        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getAllPostResponseDTO(), HttpStatus.OK);
+    }
+
+    @GetMapping("/id/{postId}")
+    public ResponseEntity<PostResponseDTO> getById(@PathVariable Long postId) throws PostNotFoundException {
+        return new ResponseEntity<>(postService.getPostResponseDTOById(postId), HttpStatus.OK);
     }
 
     @GetMapping("/author/id/{authorId}")
     public ResponseEntity<List<PostResponseDTO>> getAllByAuthorId(@PathVariable Long authorId) throws GommiUserNotFoundException {
-        return new ResponseEntity<>(postService.getPostsByAuthorId(authorId), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPostsResponseDTOByAuthorId(authorId), HttpStatus.OK);
     }
 
     @GetMapping("/author/login/{login}")
     public ResponseEntity<List<PostResponseDTO>> getAllByAuthorLogin(@PathVariable String login) throws GommiUserNotFoundException {
-        return new ResponseEntity<>(postService.getPostByAuthorLogin(login), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPostsResponseDTOByAuthorLogin(login), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<PostResponseDTO> create(@RequestBody PostRequestDTO post) throws GommiUserNotFoundException {
         return new ResponseEntity<>(postService.createPost(post), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/upvote/id/{postId}")
+    public ResponseEntity<PostSimpleResponseDTO> upVote(@PathVariable Long postId) throws PostNotFoundException {
+        return new ResponseEntity<>(postService.upVotePost(postId), HttpStatus.OK);
+    }
+
+    @PostMapping("/downvote/id/{postId}")
+    public ResponseEntity<PostSimpleResponseDTO> downVotePost(@PathVariable Long postId) throws PostNotFoundException {
+        return new ResponseEntity<>(postService.downVotePost(postId), HttpStatus.OK);
     }
 }
