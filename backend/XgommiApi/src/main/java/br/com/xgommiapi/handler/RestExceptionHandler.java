@@ -1,9 +1,6 @@
 package br.com.xgommiapi.handler;
 
-import br.com.xgommiapi.exception.GommiUserNotFoundException;
-import br.com.xgommiapi.exception.GommiUserNotUniqueException;
-import br.com.xgommiapi.exception.GommiUserNullAtributeException;
-import br.com.xgommiapi.exception.PostNotFoundException;
+import br.com.xgommiapi.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,5 +31,17 @@ public class RestExceptionHandler {
     private ResponseEntity<RestExceptionMessage> PostNotFoundException(PostNotFoundException ex) {
         RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(FollowerRelationAlreadyExistsException.class)
+    private ResponseEntity<RestExceptionMessage> PostNotFoundException(FollowerRelationAlreadyExistsException ex) {
+        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.CONFLICT, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(SelfFollowException.class)
+    private ResponseEntity<RestExceptionMessage> PostNotFoundException(SelfFollowException ex) {
+        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 }
