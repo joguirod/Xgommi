@@ -42,6 +42,26 @@ public class Post {
         this.text = text;
     }
 
+    public void incrementUpVotes() {
+        this.upvotes++;
+    }
+
+    public void incrementDownVotes() {
+        this.downvotes++;
+    }
+
+    public void decrementUpVotes() {
+        this.upvotes--;
+    }
+
+    public void decrementDownVotes() {
+        this.downvotes--;
+    }
+
+    public void addComment(Comment comment) {
+        this.commentsList.add(comment);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
