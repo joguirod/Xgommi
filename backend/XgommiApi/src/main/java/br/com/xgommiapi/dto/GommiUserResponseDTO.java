@@ -16,6 +16,6 @@ public record GommiUserResponseDTO (
         LocalDateTime registrationDate,
         List<PostSimpleResponseDTO> posts,
         List<FollowingResponseDTO> following,
-        List<FollowingResponseDTO> followers
+        List<FollowerResponseDTO> followers
         ){
 }

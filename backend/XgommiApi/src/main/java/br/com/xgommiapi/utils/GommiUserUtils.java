@@ -33,7 +33,7 @@ public class GommiUserUtils {
                 .registrationDate(gommiUser.getRegistrationDate())
                 .posts(PostUtils.parsePostListToSimpleResponseDTOList(gommiUser.getPosts()))
                 .following(convertFollowerRelationsToFollowingResponseDTOs(gommiUser.getFollowing()))
-                .followers(convertFollowerRelationsToFollowingResponseDTOs(gommiUser.getFollowers()))
+                .followers(convertFollowerRelationsToFollowerResponseDTOs(gommiUser.getFollowers()))
                 .build();
     }
 
