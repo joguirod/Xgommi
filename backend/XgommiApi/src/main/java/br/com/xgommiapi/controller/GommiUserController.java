@@ -21,9 +21,15 @@ public class  GommiUserController {
         this.gommiUserService = gommiUserService;
     }
 
+
     @PostMapping
     public ResponseEntity<GommiUserSimpleResponseDTO> post(@RequestBody GommiUserRequestDTO gommiUserRequestDTO) throws GommiUserNotUniqueException, GommiUserNullAtributeException {
         return new ResponseEntity<>(gommiUserService.createGommiUser(gommiUserRequestDTO), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<GommiUserResponseDTO> login(@RequestBody GommiUserLoginRequestDTO gommiUserLoginRequestDTO) throws GommiUserNotFoundException, GommiUserAuthenticationFailedException {
+        return new ResponseEntity<>(gommiUserService.loginResponse(gommiUserLoginRequestDTO), HttpStatus.OK);
     }
 
     @PostMapping("/follow")

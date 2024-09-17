@@ -134,6 +134,26 @@ public class GommiUserService {
         gommiUserRepository.delete(gommiUser);
     }
 
+    public GommiUser login(String login, String password) throws GommiUserNotFoundException {
+        GommiUser gommiUser = getGommiUserByLogin(login);
+
+        if (gommiUser.getPassword().equals(password)) {
+            return gommiUser;
+        }
+
+        return null;
+    }
+
+    public GommiUserResponseDTO loginResponse(GommiUserLoginRequestDTO gommiUserLoginRequestDTO) throws GommiUserAuthenticationFailedException, GommiUserNotFoundException {
+        GommiUser gommiUserLogged = login(gommiUserLoginRequestDTO.login(), gommiUserLoginRequestDTO.password());
+
+        if (gommiUserLogged == null) {
+            throw new GommiUserAuthenticationFailedException("The credentials sent are wrong");
+        }
+
+        return GommiUserUtils.convertToResponseDTO(gommiUserLogged);
+    }
+
     public void validateGommiUserUniqueAtributes(GommiUser gommiUser) throws GommiUserNotUniqueException {
         if(gommiUserRepository.existsByLogin(gommiUser.getLogin())) {
             throw new GommiUserNotUniqueException("An user with the login " + gommiUser.getLogin() + " already exists");

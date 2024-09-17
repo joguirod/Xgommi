@@ -44,4 +44,10 @@ public class RestExceptionHandler {
         RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(GommiUserAuthenticationFailedException.class)
+    private ResponseEntity<RestExceptionMessage> GommiUserAuthenticationFailedException(GommiUserAuthenticationFailedException ex) {
+        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
 }
