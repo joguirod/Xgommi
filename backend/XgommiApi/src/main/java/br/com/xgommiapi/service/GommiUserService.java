@@ -23,6 +23,25 @@ public class GommiUserService {
         this.followerRelationRepository = followerRelationRepository;
     }
 
+    public GommiUser login(String login, String password) throws GommiUserNotFoundException {
+        GommiUser gommiUser = getGommiUserByLogin(login);
+
+        if (gommiUser.getPassword().equals(password)) {
+            return gommiUser;
+        }
+
+        return null;
+    }
+
+    public GommiUserResponseDTO loginResponse(GommiUserLoginRequestDTO gommiUserLoginRequestDTO) throws GommiUserAuthenticationFailedException, GommiUserNotFoundException {
+        GommiUser gommiUserLogged = login(gommiUserLoginRequestDTO.login(), gommiUserLoginRequestDTO.password());
+
+        if (gommiUserLogged == null) {
+            throw new GommiUserAuthenticationFailedException("The credentials sent are wrong");
+        }
+
+        return GommiUserUtils.convertToResponseDTO(gommiUserLogged);}
+
     public GommiUser getGommiUserById(Long id) throws GommiUserNotFoundException {
         Optional<GommiUser> gommiUser = gommiUserRepository.findById(id);
 

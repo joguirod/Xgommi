@@ -22,7 +22,7 @@
         </aside>
 
         <!-- Main -->
-        <main class="flex-1 p-4 text-zinc-100 font-serif ">
+        <main class="flex-1 p-4 text-zinc-100 font-serif w-full">
             <header>
                 <nav class="bg-neutral-900 p-4">
                     <form class="flex items-center justify-between">
@@ -83,6 +83,31 @@
                 </button>
               </div>
             </div>
+            <div id="posts-container" class="flex flex-col items-center w-full">
+                <!-- Estrutura de modelo para postagens -->
+                <div class="post-template hidden">
+                    <div class="flex flex-col mb-5">
+                        <div class="flex mr-96 justify-center author"></div>
+                        <div class="flex justify-center">
+                            <div class="bg-gray-200 text-black p-4 md:w-2/3 lg:w-1/2 h-auto rounded-md mb-5 content"></div>
+                        </div>
+                        <div class="flex justify-center ml-80 -mt-10 reactions">
+                            Não Gostei:
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="justify-center m-2 flex w-8 bg-red-600">
+                                    <img src="deslike.ico" alt="Deslike" class="w-4 h-5">
+                                </button>
+                                Gostei:
+                                <button type="button" class="justify-center m-2 flex w-8 bg-green-600">
+                                    <img src="like.ico" alt="Curtir" class="w-4 h-5">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- As postagens serão inseridas aqui pelo JavaScript -->
+            </div>                        
+
         </main>
     </div>
 
@@ -107,7 +132,6 @@
         </div>
     </div>
 
-    <div class="post-container"></div>
 
     <!-- Scripts -->
     <script src="main.js"></script>

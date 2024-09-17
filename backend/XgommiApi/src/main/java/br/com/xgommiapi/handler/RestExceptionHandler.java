@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class RestExceptionHandler {
 
+    @ExceptionHandler(GommiUserAuthenticationFailedException.class)
+    private ResponseEntity<RestExceptionMessage> GommiUserAuthenticationFailedException(GommiUserAuthenticationFailedException ex) {
+        RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
     @ExceptionHandler(GommiUserNotFoundException.class)
     private ResponseEntity<RestExceptionMessage> GommiUserNotFoundException(GommiUserNotFoundException ex) {
         RestExceptionMessage exceptionResponse = new RestExceptionMessage(HttpStatus.NOT_FOUND, ex.getMessage());
