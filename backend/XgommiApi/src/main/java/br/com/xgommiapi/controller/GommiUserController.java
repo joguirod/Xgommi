@@ -52,7 +52,7 @@ public class  GommiUserController {
     }
 
     @PutMapping
-    public ResponseEntity<GommiUser> update(@RequestBody GommiUser gommiUser) throws GommiUserNotFoundException, GommiUserNotUniqueException, GommiUserNullAtributeException {
+    public ResponseEntity<GommiUserResponseDTO> update(@RequestBody GommiUserSimpleRequestDTO gommiUser) throws GommiUserNotFoundException, GommiUserNotUniqueException, GommiUserNullAtributeException {
         return new ResponseEntity<>(gommiUserService.updateUser(gommiUser), HttpStatus.OK);
     }
 }

@@ -54,7 +54,6 @@ public class GommiUser {
         this.password = gommiUserRequestDTO.password();
         this.email = gommiUserRequestDTO.email();
         this.name = gommiUserRequestDTO.name();
-        this.biography = gommiUserRequestDTO.biography();
     }
 
     @Override

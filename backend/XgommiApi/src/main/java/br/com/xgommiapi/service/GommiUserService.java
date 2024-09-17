@@ -90,14 +90,25 @@ public class GommiUserService {
         validateGommiUserNotNullAtributes(gommiUser);
     }
 
-    public GommiUser updateUser(GommiUser gommiUserUpdated) throws GommiUserNotUniqueException, GommiUserNullAtributeException, GommiUserNotFoundException {
-        if (!gommiUserRepository.existsById(gommiUserUpdated.getIdGommiUser())) {
-            throw new GommiUserNotFoundException("User with id " + gommiUserUpdated.getIdGommiUser() + " not found");
+    public GommiUserResponseDTO updateUser(GommiUserSimpleRequestDTO gommiUserUpdated) throws GommiUserNotUniqueException, GommiUserNullAtributeException, GommiUserNotFoundException {
+        if (gommiUserUpdated.idGommiUser() == null) {
+            throw new GommiUserNullAtributeException("Id cannot be null");
         }
-        validateGommiUserUniqueAtributes(gommiUserUpdated);
-        validateGommiUserNotNullAtributes(gommiUserUpdated);
+        GommiUser gommiUser = getGommiUserById(gommiUserUpdated.idGommiUser());
 
-        return gommiUserRepository.save(gommiUserUpdated);
+        if (gommiUserUpdated.login() != null && !gommiUserUpdated.login().equals(gommiUser.getLogin())) {
+            if(gommiUserRepository.existsByLogin(gommiUserUpdated.login())) throw new GommiUserNotUniqueException("Login already in use");
+            gommiUser.setLogin(gommiUserUpdated.login());
+        }
+
+        if (gommiUserUpdated.email() != null && !gommiUserUpdated.email().equals(gommiUser.getEmail())) {
+            if (gommiUserRepository.existsByEmail(gommiUser.getEmail())) throw new GommiUserNotUniqueException("Email already in use");
+            gommiUser.setEmail(gommiUser.getEmail());
+        }
+
+        gommiUserRepository.save(gommiUser);
+
+        return GommiUserUtils.convertToResponseDTO(gommiUser);
     }
 
     public FollowerRelation followGommiUser(Long idFollower, Long idFollowed) throws GommiUserNotFoundException, GommiUserNullAtributeException, SelfFollowException, FollowerRelationAlreadyExistsException {

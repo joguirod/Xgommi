@@ -13,8 +13,6 @@ public record GommiUserRequestDTO(
     String email,
 
     @NotBlank(message = "Name is required")
-    String name,
-
-    String biography
+    String name
 ) {
 }

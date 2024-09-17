@@ -73,7 +73,7 @@ public class GommiUserUtils {
     public static FollowingResponseDTO convertToFollowingResponseDTO(FollowerRelation followerRelation) {
         return FollowingResponseDTO.builder()
                 .idFollowRelation(followerRelation.getIdRelation())
-                .followed(convertToSimpleResponseDTO(followerRelation.getFollower()))
+                .followed(convertToSimpleResponseDTO(followerRelation.getFollowed()))
                 .build();
     }
 
