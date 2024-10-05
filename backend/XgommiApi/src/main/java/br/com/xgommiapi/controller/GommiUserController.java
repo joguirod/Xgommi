@@ -54,6 +54,12 @@ public class  GommiUserController {
         return new ResponseEntity<>(gommiUserService.getGommiUserResponseDTOByEmail(email), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{gommiUserId}")
+    public ResponseEntity delete(@PathVariable Long gommiUserId) throws GommiUserNotFoundException {
+        gommiUserService.deleteGommiUser(gommiUserId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PutMapping
     public ResponseEntity<GommiUserResponseDTO> update(@RequestBody GommiUserSimpleRequestDTO gommiUser) throws GommiUserNotFoundException, GommiUserNotUniqueException, GommiUserNullAtributeException {
         return new ResponseEntity<>(gommiUserService.updateUser(gommiUser), HttpStatus.OK);

@@ -20,7 +20,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idPost;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String text;
 
     @JsonIgnore

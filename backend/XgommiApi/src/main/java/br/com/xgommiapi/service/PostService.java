@@ -6,6 +6,7 @@ import br.com.xgommiapi.domain.repository.PostRepository;
 import br.com.xgommiapi.dto.PostRequestDTO;
 import br.com.xgommiapi.dto.PostResponseDTO;
 import br.com.xgommiapi.dto.PostSimpleResponseDTO;
+import br.com.xgommiapi.dto.PostUpdateRequestDTO;
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
 import br.com.xgommiapi.exception.PostNotFoundException;
 import br.com.xgommiapi.utils.PostUtils;
@@ -76,6 +77,11 @@ public class PostService {
         return PostUtils.parsePostToResponseDTO(post);
     }
 
+    public void deletePost(Long postId) throws PostNotFoundException {
+        Post post = getPostById(postId);
+        postRepository.delete(post);
+    }
+
     public PostSimpleResponseDTO upVotePost(Long id) throws PostNotFoundException {
         Post post = getPostById(id);
         post.incrementUpVotes();
@@ -87,6 +93,15 @@ public class PostService {
         Post post = getPostById(id);
         post.incrementDownVotes();
         postRepository.save(post);
+        return PostUtils.parsePostToSimpleResponseDTO(post);
+    }
+
+    public PostSimpleResponseDTO update(PostUpdateRequestDTO postDTO) throws PostNotFoundException {
+        Post post = getPostById(postDTO.postId());
+
+        post.setText(postDTO.text());
+        postRepository.save(post);
+
         return PostUtils.parsePostToSimpleResponseDTO(post);
     }
 }

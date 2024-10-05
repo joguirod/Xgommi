@@ -3,9 +3,11 @@ package br.com.xgommiapi.controller;
 import br.com.xgommiapi.dto.PostRequestDTO;
 import br.com.xgommiapi.dto.PostResponseDTO;
 import br.com.xgommiapi.dto.PostSimpleResponseDTO;
+import br.com.xgommiapi.dto.PostUpdateRequestDTO;
 import br.com.xgommiapi.exception.GommiUserNotFoundException;
 import br.com.xgommiapi.exception.PostNotFoundException;
 import br.com.xgommiapi.service.PostService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,5 +58,16 @@ public class PostController {
     @PostMapping("/downvote/id/{postId}")
     public ResponseEntity<PostSimpleResponseDTO> downVotePost(@PathVariable Long postId) throws PostNotFoundException {
         return new ResponseEntity<>(postService.downVotePost(postId), HttpStatus.OK);
+    }
+
+    @DeleteMapping(("/{postId}"))
+    public ResponseEntity delete(@PathVariable Long postId) throws PostNotFoundException {
+        postService.deletePost(postId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping()
+    public ResponseEntity<PostSimpleResponseDTO> update(@RequestBody PostUpdateRequestDTO postUpdateRequestDTO) throws PostNotFoundException {
+        return new ResponseEntity<>(postService.update(postUpdateRequestDTO), HttpStatus.OK);
     }
 }
